@@ -1880,7 +1880,7 @@ async function testFirebase(){
 async function pushToFirebase(){
   const url=getFirebaseUrl();if(!url)return false;
   try{
-    const r=await fetch(url+'/wkpoule26.json',{method:'PUT',headers:{'Content-Type':'application/json'},
+    const r=await fetch(url+'/wkpoule26familie.json',{method:'PUT',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({published:localStorage.getItem('wkp26f_published')==='true',published2:localStorage.getItem('wkp26f_published2')==='true',gepubliceerd_op:new Date().toLocaleString('nl-NL'),uitslagen:JSON.parse(JSON.stringify(uitslagen)),entries:getEntries()})});
     return r.ok;
   }catch(e){return false;}
@@ -1892,7 +1892,7 @@ async function syncToFirebase(){
 }
 async function loadFromFirebase(){
   const url=getFirebaseUrl();if(!url)return null;
-  try{const r=await fetch(url+'/wkpoule26.json');if(!r.ok)return null;return await r.json();}catch(e){return null;}
+  try{const r=await fetch(url+'/wkpoule26familie.json');if(!r.ok)return null;return await r.json();}catch(e){return null;}
 }
 async function initFromFirebase(){
   const data=await loadFromFirebase();if(!data)return;
