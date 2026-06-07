@@ -655,13 +655,13 @@ function initUitslagen(){
 }
 
 // ── DEADLINE HELPERS ─────────────────────────────────────────────────────
-function isDeadline1Passed(){const dl=localStorage.getItem('wkp26_deadline');return dl?new Date()>new Date(dl):false;}
-function isDeadline2Passed(){const dl=localStorage.getItem('wkp26_deadline2');return dl?new Date()>new Date(dl):false;}
+function isDeadline1Passed(){const dl=localStorage.getItem('wkp26f_deadline');return dl?new Date()>new Date(dl):false;}
+function isDeadline2Passed(){const dl=localStorage.getItem('wkp26f_deadline2');return dl?new Date()>new Date(dl):false;}
 
 // ── VIEWER ───────────────────────────────────────────────────────────────
 function updateViewerBars(){
-  const pub1=localStorage.getItem('wkp26_published')==='true';
-  const pub2=localStorage.getItem('wkp26_published2')==='true';
+  const pub1=localStorage.getItem('wkp26f_published')==='true';
+  const pub2=localStorage.getItem('wkp26f_published2')==='true';
   const entries=getEntries();
   const barPoule=document.getElementById('viewer-bar-poule');
   if(barPoule) barPoule.classList.toggle('visible',pub1&&entries.length>0);
@@ -1108,8 +1108,8 @@ function makePlayerACInput(arr,idx,fase,locked){
 
 function buildTopscorersViewer(entry1,entry2){
   const c=document.getElementById('topscorers-container');c.innerHTML='';
-  const pub1=localStorage.getItem('wkp26_published')==='true';
-  const pub2=localStorage.getItem('wkp26_published2')==='true';
+  const pub1=localStorage.getItem('wkp26f_published')==='true';
+  const pub2=localStorage.getItem('wkp26f_published2')==='true';
   const entries=[entry1,entry2].filter(Boolean);
 
   const renderFase=(fase,label,deadlineLabel,pub)=>{
@@ -1623,10 +1623,10 @@ function toggleDetail(hd){
 // ── TABS ──────────────────────────────────────────────────────────────────
 function showTab(tab){
   if(tab==='admin'){
-    if(sessionStorage.getItem('wkp26_admin')!=='ok'){
+    if(sessionStorage.getItem('wkp26f_admin')!=='ok'){
       const pw=prompt('Wachtwoord:');
       if(pw!=='waerdfam'){alert('Onjuist wachtwoord.');return;}
-      sessionStorage.setItem('wkp26_admin','ok');
+      sessionStorage.setItem('wkp26f_admin','ok');
     }
     buildAdminGroups();buildAdminStandings();buildAdminKO();buildAdminTopscorers();buildAdminExtra();
   }
@@ -1675,19 +1675,19 @@ function lockForm(){
 function updateCountdowns(){
   const now=new Date();
   updateCD('cd-wk',now,new Date('2026-06-11T21:00:00+02:00'),'Begonnen!');
-  const dl=localStorage.getItem('wkp26_deadline');
+  const dl=localStorage.getItem('wkp26f_deadline');
   if(dl){
     const dlDate=new Date(dl);
     updateCD('cd-deadline',now,dlDate,'Verstreken!');
     const sub=document.getElementById('cd-deadline-sub');
     if(sub) sub.textContent='Deadline 1: '+dlDate.toLocaleDateString('nl-NL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
   }
-  const dl2=localStorage.getItem('wkp26_deadline2')||localStorage.getItem('wkp26_deadline');
+  const dl2=localStorage.getItem('wkp26f_deadline2')||localStorage.getItem('wkp26f_deadline');
   if(dl2){
     const dl2Date=new Date(dl2);
     updateCD('cd-deadline2',now,dl2Date,'Verstreken!');
     const sub2=document.getElementById('cd-deadline2-sub');
-    if(sub2) sub2.textContent='Deadline 2: '+localStorage.getItem('wkp26_deadline2')
+    if(sub2) sub2.textContent='Deadline 2: '+localStorage.getItem('wkp26f_deadline2')
       ?dl2Date.toLocaleDateString('nl-NL',{day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'})
       :'Nog niet ingesteld (= deadline 1)';
   }
@@ -1704,12 +1704,12 @@ function updateCD(id,now,target,doneText){
 function saveDeadline(n){
   const inp=document.getElementById(n===1?'deadline-input':'deadline2-input');
   if(!inp||!inp.value){alert('Kies een datum en tijd.');return;}
-  localStorage.setItem(n===1?'wkp26_deadline':'wkp26_deadline2',new Date(inp.value).toISOString());
+  localStorage.setItem(n===1?'wkp26f_deadline':'wkp26f_deadline2',new Date(inp.value).toISOString());
   updateCountdowns();alert('Deadline '+n+' opgeslagen!');
 }
 function loadDeadlineInput(){
   [1,2].forEach(n=>{
-    const key=n===1?'wkp26_deadline':'wkp26_deadline2';
+    const key=n===1?'wkp26f_deadline':'wkp26f_deadline2';
     const id=n===1?'deadline-input':'deadline2-input';
     const dl=localStorage.getItem(key);
     if(dl){const d=new Date(dl);document.getElementById(id).value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);}
@@ -1717,14 +1717,14 @@ function loadDeadlineInput(){
 }
 
 // ── STORAGE ───────────────────────────────────────────────────────────────
-function getEntries(){try{return JSON.parse(localStorage.getItem('wkp26_entries')||'[]');}catch(e){return[];}}
-function setEntries(e){localStorage.setItem('wkp26_entries',JSON.stringify(e));}
+function getEntries(){try{return JSON.parse(localStorage.getItem('wkp26f_entries')||'[]');}catch(e){return[];}}
+function setEntries(e){localStorage.setItem('wkp26f_entries',JSON.stringify(e));}
 
 function saveProgress(){
   const naam=document.getElementById('naam-input').value.trim();
   const slogan=document.getElementById('slogan-input').value.trim();
   const draft={naam,slogan,groups:JSON.parse(JSON.stringify(state.groups)),ko:JSON.parse(JSON.stringify(state.ko)),extra:JSON.parse(JSON.stringify(state.extra)),topscorers_poule:JSON.parse(JSON.stringify(state.topscorers_poule)),topscorers_ko:JSON.parse(JSON.stringify(state.topscorers_ko)),opgeslagen:new Date().toLocaleString('nl-NL')};
-  localStorage.setItem('wkp26_draft',JSON.stringify(draft));
+  localStorage.setItem('wkp26f_draft',JSON.stringify(draft));
   const el=document.getElementById('autosave-info');
   el.textContent='Opgeslagen om '+draft.opgeslagen;el.style.color='var(--green-text)';
   setTimeout(()=>{el.style.color='var(--text2)';},3000);
@@ -1732,7 +1732,7 @@ function saveProgress(){
 
 function loadProgress(){
   try{
-    const raw=localStorage.getItem('wkp26_draft');if(!raw)return;
+    const raw=localStorage.getItem('wkp26f_draft');if(!raw)return;
     const draft=JSON.parse(raw);
     if(draft.naam) document.getElementById('naam-input').value=draft.naam;
     if(draft.slogan) document.getElementById('slogan-input').value=draft.slogan;
@@ -1835,8 +1835,8 @@ function deleteEntry(idx){if(!confirm('Inzending verwijderen?'))return;const e=g
 function clearAll(){if(!confirm('ALLE inzendingen wissen?'))return;setEntries([]);loadEntries();}
 
 function loadPubStatus(){
-  applyPubStatus(1,localStorage.getItem('wkp26_published')==='true');
-  applyPubStatus(2,localStorage.getItem('wkp26_published2')==='true');
+  applyPubStatus(1,localStorage.getItem('wkp26f_published')==='true');
+  applyPubStatus(2,localStorage.getItem('wkp26f_published2')==='true');
 }
 function applyPubStatus(n,pub){
   if(n===1){
@@ -1864,16 +1864,16 @@ function applyPubStatus(n,pub){
 }
 
 // ── FIREBASE ──────────────────────────────────────────────────────────────
-function getFirebaseUrl(){const u=localStorage.getItem('wkp26_firebase_url')||'';return u.endsWith('/')?u.slice(0,-1):u;}
+function getFirebaseUrl(){const u=localStorage.getItem('wkp26f_firebase_url')||'';return u.endsWith('/')?u.slice(0,-1):u;}
 function saveFirebaseUrl(){
   let v=document.getElementById('firebase-url-input').value.trim();if(v.endsWith('/'))v=v.slice(0,-1);
   if(!v){alert('Vul een URL in.');return;}
-  localStorage.setItem('wkp26_firebase_url',v);testFirebase();
+  localStorage.setItem('wkp26f_firebase_url',v);testFirebase();
 }
 function loadFirebaseUrlInput(){const url=getFirebaseUrl();const inp=document.getElementById('firebase-url-input');if(inp&&url) inp.value=url;}
 async function testFirebase(){
   const url=getFirebaseUrl();const el=document.getElementById('firebase-status');if(!url){if(el)el.textContent='';return;}
-  try{const r=await fetch(url+'/wkp26_ping.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:'"ok"'});
+  try{const r=await fetch(url+'/wkp26f_ping.json',{method:'PUT',headers:{'Content-Type':'application/json'},body:'"ok"'});
     if(el){el.textContent=r.ok?'✓ Verbinding OK':'✗ Fout '+r.status;el.style.color=r.ok?'var(--green-text)':'var(--red-text)';}}
   catch(e){if(el){el.textContent='✗ Kan niet verbinden';el.style.color='var(--red-text)';}}
 }
@@ -1881,7 +1881,7 @@ async function pushToFirebase(){
   const url=getFirebaseUrl();if(!url)return false;
   try{
     const r=await fetch(url+'/wkpoule26.json',{method:'PUT',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({published:localStorage.getItem('wkp26_published')==='true',published2:localStorage.getItem('wkp26_published2')==='true',gepubliceerd_op:new Date().toLocaleString('nl-NL'),uitslagen:JSON.parse(JSON.stringify(uitslagen)),entries:getEntries()})});
+      body:JSON.stringify({published:localStorage.getItem('wkp26f_published')==='true',published2:localStorage.getItem('wkp26f_published2')==='true',gepubliceerd_op:new Date().toLocaleString('nl-NL'),uitslagen:JSON.parse(JSON.stringify(uitslagen)),entries:getEntries()})});
     return r.ok;
   }catch(e){return false;}
 }
@@ -1905,14 +1905,14 @@ async function initFromFirebase(){
     if(data.uitslagen.topscorers_ko) uitslagen.topscorers_ko=data.uitslagen.topscorers_ko;
   }
   if(data.entries&&data.entries.length) setEntries(data.entries);
-  localStorage.setItem('wkp26_published',data.published?'true':'false');
+  localStorage.setItem('wkp26f_published',data.published?'true':'false');
   applyPubStatus(1,data.published===true);
-  localStorage.setItem('wkp26_published2',data.published2?'true':'false');
+  localStorage.setItem('wkp26f_published2',data.published2?'true':'false');
   applyPubStatus(2,data.published2===true);
   updateViewerBars();
 }
 async function togglePublish(n){
-  const key=n===1?'wkp26_published':'wkp26_published2';
+  const key=n===1?'wkp26f_published':'wkp26f_published2';
   const p=localStorage.getItem(key)==='true';const newPub=!p;
   localStorage.setItem(key,String(newPub));applyPubStatus(n,newPub);
   const fbUrl=getFirebaseUrl();if(!fbUrl)return;
@@ -1924,13 +1924,13 @@ async function togglePublish(n){
 
 // ── UITSLAGEN OPSLAAN ─────────────────────────────────────────────────────
 function saveUitslagen(){
-  localStorage.setItem('wkp26_uitslagen',JSON.stringify(uitslagen));
+  localStorage.setItem('wkp26f_uitslagen',JSON.stringify(uitslagen));
   const el=document.getElementById('uitslagen-save-info');
   el.textContent='Opgeslagen om '+new Date().toLocaleString('nl-NL');el.style.color='var(--green-text)';
   setTimeout(()=>{el.style.color='var(--text2)';},3000);
 }
 function loadUitslagen(){
-  try{const raw=localStorage.getItem('wkp26_uitslagen');if(raw) uitslagen=JSON.parse(raw);initUitslagen();}catch(e){initUitslagen();}
+  try{const raw=localStorage.getItem('wkp26f_uitslagen');if(raw) uitslagen=JSON.parse(raw);initUitslagen();}catch(e){initUitslagen();}
 }
 function exportUitslagenJSON(){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(uitslagen,null,2)],{type:'application/json'}));a.download='wk2026_uitslagen.json';a.click();
@@ -2080,13 +2080,13 @@ function handleImport(input){
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 (async()=>{
-  if(!localStorage.getItem('wkp26_deadline')){
-    localStorage.setItem('wkp26_deadline','2026-06-11T18:30:00.000Z');
+  if(!localStorage.getItem('wkp26f_deadline')){
+    localStorage.setItem('wkp26f_deadline','2026-06-11T18:30:00.000Z');
   }
-  if(!localStorage.getItem('wkp26_deadline2')){
-    localStorage.setItem('wkp26_deadline2','2026-06-28T18:30:00.000Z');
+  if(!localStorage.getItem('wkp26f_deadline2')){
+    localStorage.setItem('wkp26f_deadline2','2026-06-28T18:30:00.000Z');
   }
-  localStorage.setItem('wkp26_firebase_url','https://wk-poule-2026-familie-default-rtdb.europe-west1.firebasedatabase.app');
+  localStorage.setItem('wkp26f_firebase_url','https://wk-poule-2026-familie-default-rtdb.europe-west1.firebasedatabase.app');
   await loadPlayers();
   initState();
   loadUitslagen();
