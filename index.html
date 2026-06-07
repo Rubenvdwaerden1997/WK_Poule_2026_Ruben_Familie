@@ -1625,7 +1625,7 @@ function showTab(tab){
   if(tab==='admin'){
     if(sessionStorage.getItem('wkp26_admin')!=='ok'){
       const pw=prompt('Wachtwoord:');
-      if(pw!=='paarseaars'){alert('Onjuist wachtwoord.');return;}
+      if(pw!=='waerdfam'){alert('Onjuist wachtwoord.');return;}
       sessionStorage.setItem('wkp26_admin','ok');
     }
     buildAdminGroups();buildAdminStandings();buildAdminKO();buildAdminTopscorers();buildAdminExtra();
@@ -1774,7 +1774,7 @@ function submitEntry(){
 
   const btn=document.getElementById('submit-btn');btn.textContent='Versturen...';btn.disabled=true;
   const jsonTekst=JSON.stringify(entry);
-  let emailTekst='=== DE WK POULE 2026 ===\nNaam: '+naam+'\nSlogan: "'+slogan+'"\n\n--- TOPSCORERS POULEFASE ---\n';
+  let emailTekst='=== DE WK POULE 2026 - Familie ===\nNaam: '+naam+'\nSlogan: "'+slogan+'"\n\n--- TOPSCORERS POULEFASE ---\n';
   (entry.topscorers_poule||[]).forEach((p,i)=>{emailTekst+='Speler '+(i+1)+': '+(p||'-')+'\n';});
   emailTekst+='\n--- TOPSCORERS KO ---\n';
   (entry.topscorers_ko||[]).forEach((p,i)=>{emailTekst+='Speler '+(i+1)+': '+(p||'-')+'\n';});
@@ -2034,9 +2034,9 @@ function buildOverzicht(){
 function exportPDF(){
   const entries=getEntries();if(!entries.length){alert('Geen inzendingen.');return;}
   const names=entries.map(e=>e.naam);
-  let html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>WK Poule 2026</title>
+  let html=`<!DOCTYPE html><html><head><meta charset="utf-8"><title>WK Poule 2026 - Familie</title>
   <style>body{font-family:Arial,sans-serif;font-size:9.5px;color:#111;margin:15px}h1{font-size:15px}h2{font-size:11.5px;margin:14px 0 5px;border-bottom:1.5px solid #1a3a5c;padding-bottom:3px;color:#1a3a5c}table{width:100%;border-collapse:collapse;margin-bottom:10px}th{background:#1a3a5c;color:#fff;padding:4px 6px;text-align:left;font-size:9px}td{padding:3px 6px;border-bottom:1px solid #e8e8e8;font-size:9px}tr:nth-child(even) td{background:#f9f9f9}</style>
-  </head><body><h1>WK Poule 2026</h1>`;
+  </head><body><h1>WK Poule 2026 - Familie</h1>`;
   html+=`<h2>Topscorers poulefase</h2><table><tr><th>#</th>`;names.forEach(n=>{html+=`<th>${n}</th>`;});html+='</tr>';
   for(let i=0;i<4;i++){html+=`<tr><td>Speler ${i+1}</td>`;entries.forEach(e=>{html+=`<td>${e.topscorers_poule?.[i]||'-'}</td>`;});html+='</tr>';}
   html+='</table>';
@@ -2086,7 +2086,7 @@ function handleImport(input){
   if(!localStorage.getItem('wkp26_deadline2')){
     localStorage.setItem('wkp26_deadline2','2026-06-28T18:30:00.000Z');
   }
-  localStorage.setItem('wkp26_firebase_url','https://wk-poule-2026-ruben-default-rtdb.europe-west1.firebasedatabase.app');
+  localStorage.setItem('wkp26_firebase_url','https://wk-poule-2026-familie-default-rtdb.europe-west1.firebasedatabase.app');
   await loadPlayers();
   initState();
   loadUitslagen();
