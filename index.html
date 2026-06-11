@@ -2103,6 +2103,7 @@ function handleImport(input){
   loadPubStatus();loadProgress();
   updateCountdowns();
   setInterval(updateCountdowns,1000);
+  setInterval(saveProgress,10000);
   initFromFirebase();
 })();
 </script>
