@@ -1362,21 +1362,21 @@ function buildAdminTopscorers(){
 }
 
 function makePlayerACInput_admin(field,initialValue){
+  const nlPlayers=WK_PLAYERS.filter(p=>p.team==='Nederland');
   const wrap=document.createElement('div');wrap.style.position='relative';
   const input=document.createElement('input');
   input.className='extra-input';input.type='text';input.autocomplete='off';
-  input.placeholder='Zoek speler...';input.value=initialValue;
+  input.placeholder='Zoek Nederlandse speler...';input.value=initialValue;
   const dropdown=document.createElement('div');
   dropdown.className='ac-dropdown';dropdown.style.display='none';
   let activeIdx=-1;
-  function getMatches(q){if(!q||q.length<1)return[];const ql=q.toLowerCase();return WK_PLAYERS.filter(p=>p.name.toLowerCase().includes(ql)).slice(0,10);}
+  function getMatches(q){if(!q)return nlPlayers.slice(0,10);const ql=q.toLowerCase();return nlPlayers.filter(p=>p.name.toLowerCase().includes(ql)).slice(0,10);}
   function renderDropdown(matches){
     dropdown.innerHTML='';activeIdx=-1;
     if(!matches.length){dropdown.style.display='none';return;}
     matches.forEach(p=>{
       const item=document.createElement('div');item.className='ac-item';
-      const flag=FLAGS[p.team]||'';
-      item.innerHTML=`${playerBadge(p.position)}<span style="flex:1">${p.name}</span><span style="font-size:11px;color:var(--text2)">${flag} ${p.team}</span>`;
+      item.innerHTML=`${playerBadge(p.position)}<span style="flex:1">${p.name}</span>`;
       item.style.cssText='display:flex;align-items:center;gap:4px';
       item.addEventListener('mousedown',e=>{e.preventDefault();input.value=p.name;uitslagen.extra[field]=p.name;dropdown.style.display='none';});
       dropdown.appendChild(item);
@@ -1385,7 +1385,7 @@ function makePlayerACInput_admin(field,initialValue){
   }
   input.addEventListener('input',()=>{uitslagen.extra[field]=input.value;renderDropdown(getMatches(input.value));});
   input.addEventListener('blur',()=>{setTimeout(()=>{dropdown.style.display='none';},150);});
-  input.addEventListener('focus',()=>{if(input.value)renderDropdown(getMatches(input.value));});
+  input.addEventListener('focus',()=>{renderDropdown(getMatches(input.value));});
   wrap.appendChild(input);wrap.appendChild(dropdown);
   return wrap;
 }
