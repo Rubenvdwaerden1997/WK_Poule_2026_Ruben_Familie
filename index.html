@@ -1669,7 +1669,7 @@ function lockForm(){
   if(l1){
     document.body.classList.add('deadline-locked');
     document.querySelectorAll('.score-input,.st-select,#naam-input,#slogan-input').forEach(el=>el.disabled=true);
-    document.querySelectorAll('.extra-input').forEach(el=>el.disabled=true);
+    document.querySelectorAll('.extra-input').forEach(el=>{if(!el.closest('#sec-admin')&&!el.closest('[id^="ts-wrap-ko"]')) el.disabled=true;});
   }
   if(l2){
     document.querySelectorAll('.ko-input').forEach(el=>el.disabled=true);
@@ -1932,11 +1932,12 @@ async function togglePublish(n){
 }
 
 // ── UITSLAGEN OPSLAAN ─────────────────────────────────────────────────────
-function saveUitslagen(){
+async function saveUitslagen(){
   localStorage.setItem('wkp26f_uitslagen',JSON.stringify(uitslagen));
   const el=document.getElementById('uitslagen-save-info');
   el.textContent='Opgeslagen om '+new Date().toLocaleString('nl-NL');el.style.color='var(--green-text)';
   setTimeout(()=>{el.style.color='var(--text2)';},3000);
+  pushToFirebase();
 }
 function loadUitslagen(){
   try{const raw=localStorage.getItem('wkp26f_uitslagen');if(raw) uitslagen=JSON.parse(raw);initUitslagen();}catch(e){initUitslagen();}
@@ -2104,6 +2105,7 @@ function handleImport(input){
   updateCountdowns();
   setInterval(updateCountdowns,1000);
   setInterval(saveProgress,10000);
+  setInterval(saveUitslagen,30000);
   initFromFirebase();
 })();
 </script>
