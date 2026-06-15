@@ -201,10 +201,10 @@
         }
       },
       "standing": [
-        "",
-        "",
-        "",
-        ""
+        "2",
+        "1",
+        "3",
+        "4"
       ]
     },
     "G": {
@@ -548,8 +548,8 @@
   "topscorers_poule": [
     "Kylian Mbappé",
     "Bruno Fernandes",
-    "",
-    ""
+    "Denzel Dumfries",
+    "Harry Kane"
   ],
   "topscorers_ko": [
     "",
